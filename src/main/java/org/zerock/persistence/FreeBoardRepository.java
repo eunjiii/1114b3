@@ -16,6 +16,14 @@ public interface FreeBoardRepository extends CrudRepository<FreeBoard, Long> {
 	@Query("select b, count(r) from FreeBoard b left outer join FreeReply r on b.bno = r.board group by b")
 	public Page<Object[]> listPage(Pageable pageable);
 	
-	@Query("select b, count(r) from FreeBoard b left outer join FreeReply r on b.bno = r.board where b.titie like %?1% group by b")
+	@Query("select b, count(r) from FreeBoard b"
+			+ "left outer join FreeReply r on b.bno = r.board "
+			+ "where b.titie like %?1% group by b")
 	public Page<Object[]> listByTitlePage(String kryword, Pageable pageable);
+	
+	@Query("select b, count(r) from FreeBoard b "
+			+ "left outer join FreeReply r on b.bno = r.board "
+			+ "where (b.titie like %?1% or b.content like %?1%) group by b")
+	public Page<Object[]> listByTitleOrContentPage(String kryword, Pageable pageable);
+	
 }
